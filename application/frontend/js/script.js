@@ -1,10 +1,11 @@
-const API_URL = "http://127.0.0.1:5000/predict";
+const API_URL = "https://classifica-o-acidente.onrender.com/predict";
 
 const form = document.getElementById("uploadForm");
 const imageInput = document.getElementById("imageInput");
 const preview = document.getElementById("preview");
 const resultDiv = document.getElementById("result");
 const probsDiv = document.getElementById("probs");
+const contacdiv = document.getElementById("contact");
 
 // Preview da imagem
 imageInput.addEventListener("change", () => {
@@ -41,6 +42,11 @@ form.addEventListener("submit", async (e) => {
 
         const data = await response.json();
 
+        const sosBtn = document.getElementById('btn-sos');
+        const seguroBtn = document.getElementById('btn-seguro');
+        sosBtn.style.display = 'none';
+        seguroBtn.style.display = 'none';
+
         const classe = data.classe_original;
         const resultado = data.resultado;
         const probs = data.probabilidades;
@@ -50,32 +56,20 @@ form.addEventListener("submit", async (e) => {
         resultDiv.className = `result ${classe}`;
         resultDiv.classList.remove("hidden");
 
-        // Probabilidades
-        probsDiv.innerHTML = "";
-        probsDiv.classList.remove("hidden");
-
-        for (const [classe, value] of Object.entries(probs)) {
-            const item = document.createElement("div");
-            item.className = "prob-item";
-            let label = "";
-            if (classe === "grave") {
-                label = "Grave";
-            } else if (classe === "moderado") {
-                label = "Moderado";
-            } else {
-                label = "Nenhum acidente";
-            }
-            item.innerHTML = `
-                <strong>${label}</strong> — ${value}%
-                <div class="bar">
-                    <div class="bar-fill ${classe}" style="width: ${value}%"></div>
-                </div>
-            `;
-
-            probsDiv.appendChild(item);
+        if (resultDiv.className === "result grave") {
+            sosBtn.style.display = 'block';
+            sosBtn.onclick = () => alert(`🚨 ALERTA DE EMERGÊNCIA ENVIADO!\nLocal: ${lat}, ${lon}\nStatus: Acidente Grave.`);
+            contacdiv.classList.remove("hidden");
+        } else if (resultDiv.className === "result moderado") {
+            seguroBtn.style.display = 'block';
+            seguroBtn.onclick = () => window.open('https://www.google.com/search?q=seguradoras+em+Fortaleza', '_blank');
+            contacdiv.classList.remove("hidden");
+        } else {
+            contacdiv.classList.add("hidden");
         }
 
     } catch (error) {
+        probsDiv.innerHTML = "";
         resultDiv.innerText = "❌ Erro ao processar a imagem.";
     }
 });

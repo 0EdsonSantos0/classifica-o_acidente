@@ -25,6 +25,23 @@
     <div id="result" class="result hidden"></div>
     <div id="probs" class="probs hidden"></div>
 </div>
+<div class="container hidden" id="contact">
+    <button id="btn-sos" style="display:none; background: #e74c3c; color: white; border: none; padding: 15px; width: 100%; font-weight: bold; border-radius: 5px; margin-top: 15px; cursor: pointer; animation: pulse 2s infinite;">
+        🚨 ACIONAR SAMU / BOMBEIROS
+    </button>
+
+    <button id="btn-seguro" style="display:none; background: #3498db; color: white; border: none; padding: 12px; width: 100%; font-weight: bold; border-radius: 5px; margin-top: 15px; cursor: pointer;">
+        📞 CONTACTAR SEGURADORA / GUINCHO
+    </button>
+
+    <style>
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.7); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(231, 76, 60, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(231, 76, 60, 0); }
+        }
+    </style>
+</div>
 
 <script src="js/script.js?v=1"></script>
 </body>
